@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import 'leaflet/dist/leaflet.css';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import "leaflet/dist/leaflet.css";
 
 @tailwind base;
 @tailwind components;
@@ -11,17 +11,22 @@
   --glass-border: rgba(255, 255, 255, 0.15);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   --glass-hover: rgba(255, 255, 255, 0.12);
-  
+
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --gradient-tertiary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #312e81 100%);
-  
+  --gradient-dark: linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #1e293b 50%,
+    #312e81 100%
+  );
+
   --neon-blue: #06b6d4;
   --neon-purple: #7c3aed;
   --neon-pink: #ec4899;
   --neon-cyan: #06b6d4;
-  
+
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.5);
@@ -29,24 +34,24 @@
 
 /* Light Mode Design System */
 [data-theme="light"] {
-  --light-bg-primary: linear-gradient(180deg, #F3F6FB 0%, #EAF1FF 100%);
-  --light-bg-secondary: rgba(255, 255, 255, 0.9);
-  --light-bg-glass: rgba(255, 255, 255, 0.7);
-  --light-border: rgba(255, 255, 255, 0.4);
-  --light-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-  --light-shadow-hover: 0 12px 32px rgba(15, 23, 42, 0.12);
-  
+  --light-bg-primary: linear-gradient(180deg, #f3f6fb 0%, #eaf1ff 100%);
+  --light-bg-secondary: rgba(255, 255, 255, 0.98);
+  --light-bg-glass: rgba(255, 255, 255, 0.92);
+  --light-border: rgba(0, 0, 0, 0.08);
+  --light-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --light-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+
   --light-text-primary: #111827;
-  --light-text-secondary: #4B5563;
-  --light-text-muted: #9CA3AF;
-  
-  --light-accent: #3B82F6;
-  --light-accent-hover: #2563EB;
-  
-  --light-wind: #3B82F6;
-  --light-visibility: #10B981;
-  --light-pressure: #F59E0B;
-  --light-humidity: #06B6D4;
+  --light-text-secondary: #374151;
+  --light-text-muted: #6b7280;
+
+  --light-accent: #3b82f6;
+  --light-accent-hover: #2563eb;
+
+  --light-wind: #3b82f6;
+  --light-visibility: #10b981;
+  --light-pressure: #f59e0b;
+  --light-humidity: #06b6d4;
 }
 
 /* Premium Glassmorphism Card */
@@ -67,21 +72,194 @@
 
 /* Light Mode Glass Cards */
 [data-theme="light"] .glass-card {
-  background: var(--light-bg-glass);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--light-border);
-  box-shadow: var(--light-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
 }
 
 [data-theme="light"] .glass-card:hover {
-  background: var(--light-bg-secondary);
-  box-shadow: var(--light-shadow-hover);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Light Mode Text Colors */
+[data-theme="light"] .text-primary {
+  color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .text-secondary {
+  color: var(--light-text-secondary) !important;
+}
+
+[data-theme="light"] .text-muted {
+  color: var(--light-text-muted) !important;
+}
+
+/* Light Mode Component Text Fixes */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] div {
+  color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .text-gray-400,
+[data-theme="light"] .text-gray-500,
+[data-theme="light"] .text-gray-600 {
+  color: var(--light-text-secondary) !important;
+}
+
+[data-theme="light"] .text-gray-300,
+[data-theme="light"] .text-gray-200 {
+  color: var(--light-text-muted) !important;
+}
+
+/* Light Mode Icon Fixes */
+[data-theme="light"] svg {
+  color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .text-blue-400,
+[data-theme="light"] .text-green-400,
+[data-theme="light"] .text-yellow-400,
+[data-theme="light"] .text-purple-400 {
+  opacity: 0.9 !important;
+}
+
+/* Additional Light Mode Fixes */
+[data-theme="light"] .text-gray-100,
+[data-theme="light"] .text-gray-200,
+[data-theme="light"] .text-gray-300 {
+  color: var(--light-text-muted) !important;
+}
+
+[data-theme="light"] .text-gray-400,
+[data-theme="light"] .text-gray-500,
+[data-theme="light"] .text-gray-600 {
+  color: var(--light-text-secondary) !important;
+}
+
+[data-theme="light"] .text-gray-700,
+[data-theme="light"] .text-gray-800,
+[data-theme="light"] .text-gray-900 {
+  color: var(--light-text-primary) !important;
+}
+
+/* Ensure all emoji and icons are visible */
+[data-theme="light"] .text-2xl,
+[data-theme="light"] .text-3xl,
+[data-theme="light"] .text-4xl,
+[data-theme="light"] .text-5xl,
+[data-theme="light"] .text-6xl {
+  color: var(--light-text-primary) !important;
+}
+
+/* Fix any remaining low opacity text */
+[data-theme="light"] * {
+  opacity: 1 !important;
+}
+
+[data-theme="light"] .opacity-50,
+[data-theme="light"] .opacity-60,
+[data-theme="light"] .opacity-70,
+[data-theme="light"] .opacity-80 {
+  opacity: 0.8 !important;
+}
+
+/* Enhanced Day Mode Visibility */
+[data-theme="light"] .font-semibold,
+[data-theme="light"] .font-medium,
+[data-theme="light"] .font-bold {
+  color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .text-xs,
+[data-theme="light"] .text-sm,
+[data-theme="light"] .text-base {
+  color: var(--light-text-primary) !important;
+}
+
+/* Ensure all interactive elements are visible */
+[data-theme="light"] button,
+[data-theme="light"] .cursor-pointer,
+[data-theme="light"] [role="button"] {
+  color: var(--light-text-primary) !important;
+}
+
+/* Fix any remaining transparent backgrounds */
+[data-theme="light"] .bg-transparent,
+[data-theme="light"] .bg-opacity-0,
+[data-theme="light"] .bg-opacity-10,
+[data-theme="light"] .bg-opacity-20 {
+  background-color: var(--light-bg-glass) !important;
+}
+
+/* Ensure all weather data is clearly visible */
+[data-theme="light"] .temperature,
+[data-theme="light"] .temp-value,
+[data-theme="light"] .weather-value {
+  color: var(--light-text-primary) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .weather-label,
+[data-theme="light"] .forecast-label {
+  color: var(--light-text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+/* Premium Day Mode Card Styling */
+[data-theme="light"] .current-weather-card,
+[data-theme="light"] .air-quality-card,
+[data-theme="light"] .hourly-forecast-card,
+[data-theme="light"] .weekly-forecast-card,
+[data-theme="light"] .weather-metric-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 16px !important;
+}
+
+[data-theme="light"] .current-weather-card:hover,
+[data-theme="light"] .air-quality-card:hover,
+[data-theme="light"] .hourly-forecast-card:hover,
+[data-theme="light"] .weekly-forecast-card:hover,
+[data-theme="light"] .weather-metric-card:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Enhanced Day Mode Component Backgrounds */
+[data-theme="light"] .forecast-section,
+[data-theme="light"] .metrics-section,
+[data-theme="light"] .weather-details {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Smooth transitions for theme switching */
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, transform 0.3s ease;
 }
 
 .glass-card:hover {
@@ -148,7 +326,14 @@
 
 /* Premium Background */
 .premium-bg {
-  background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #312e81 75%, #7c3aed 100%);
+  background: linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #111827 25%,
+    #1e293b 50%,
+    #312e81 75%,
+    #7c3aed 100%
+  );
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -192,7 +377,8 @@
 
 /* Premium Animations */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   33% {
@@ -204,7 +390,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
     transform: scale(1);
   }
@@ -269,7 +456,7 @@
 }
 
 .leaflet-control-container {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* Custom Map Controls */
@@ -315,7 +502,7 @@
 }
 
 .custom-marker::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 8px;
   height: 8px;
@@ -325,7 +512,7 @@
 
 /* Weather Popup Styles */
 .weather-popup {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .weather-popup .leaflet-popup-content-wrapper {
@@ -426,16 +613,16 @@
     gap: 16px;
     padding: 16px;
   }
-  
+
   .map-section {
     height: 350px;
     min-height: 350px;
   }
-  
+
   .weather-section {
     min-height: calc(100vh - 430px); /* 80px navbar + 350px map */
   }
-  
+
   .weather-section > div {
     padding: 12px;
   }
@@ -447,16 +634,16 @@
     gap: 12px;
     padding: 12px;
   }
-  
+
   .map-section {
     height: 250px;
     min-height: 250px;
   }
-  
+
   .weather-section {
     min-height: calc(100vh - 330px); /* 80px navbar + 250px map */
   }
-  
+
   .weather-section > div {
     padding: 8px;
   }
@@ -505,9 +692,10 @@
 
 /* Premium Loading States */
 .skeleton-glass {
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.05) 25%, 
-    rgba(255, 255, 255, 0.1) 50%, 
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
     rgba(255, 255, 255, 0.05) 75%
   );
   background-size: 200% 100%;
@@ -601,7 +789,7 @@
     grid-template-columns: 1fr;
     padding: 16px;
   }
-  
+
   .sidebar-left,
   .sidebar-right {
     grid-column: 1;
@@ -610,7 +798,7 @@
     gap: 16px;
     overflow-x: auto;
   }
-  
+
   .main-content {
     grid-column: 1;
   }
@@ -620,20 +808,19 @@
   .text-hero {
     font-size: 3rem;
   }
-  
+
   .text-title {
     font-size: 1.5rem;
   }
-  
+
   .dashboard-grid {
     padding: 12px;
   }
-  
+
   .glass-card {
     border-radius: 16px;
   }
 }
-
 
 /* Custom animations */
 @keyframes shimmer {
@@ -646,7 +833,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -655,7 +843,8 @@
 }
 
 @keyframes pulse-slow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -773,7 +962,7 @@ select {
   .weather-card {
     @apply rounded-xl;
   }
-  
+
   .glass {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -785,7 +974,7 @@ select {
   .no-print {
     display: none !important;
   }
-  
+
   .weather-card {
     @apply border border-gray-300 bg-white;
   }
@@ -820,7 +1009,7 @@ select {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 /* Smooth scrolling */
@@ -846,19 +1035,21 @@ html {
 
 /* Loading dots animation */
 .loading-dots::after {
-  content: '';
+  content: "";
   animation: loading-dots 1.5s infinite;
 }
 
 @keyframes loading-dots {
-  0%, 20% {
-    content: '.';
+  0%,
+  20% {
+    content: ".";
   }
   40% {
-    content: '..';
+    content: "..";
   }
-  60%, 100% {
-    content: '...';
+  60%,
+  100% {
+    content: "...";
   }
 }
 
@@ -905,13 +1096,21 @@ html {
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-2px);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(2px);
   }
 }
@@ -922,10 +1121,15 @@ html {
 }
 
 @keyframes bounce {
-  0%, 20%, 53%, 80%, 100% {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
     transform: translate3d(0, 0, 0);
   }
-  40%, 43% {
+  40%,
+  43% {
     transform: translate3d(0, -8px, 0);
   }
   70% {
