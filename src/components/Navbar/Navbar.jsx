@@ -53,6 +53,23 @@ const Navbar = ({ onAboutClick }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  // Handle ESC key to close quick actions panel
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape' && isQuickActionsOpen) {
+        setIsQuickActionsOpen(false);
+      }
+    };
+
+    if (isQuickActionsOpen) {
+      document.addEventListener('keydown', handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [isQuickActionsOpen]);
+
   const handleThemeToggle = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -324,6 +341,343 @@ const Navbar = ({ onAboutClick }) => {
               </motion.button>
             </div>
           </div>
+
+          {/* MOBILE QUICK-ACTION SIDE-SHEET */}
+          <AnimatePresence>
+            {isQuickActionsOpen && (
+              <>
+                {/* Premium Backdrop Overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="fixed inset-0 z-40 lg:hidden"
+                  style={{
+                    background: 'rgba(0, 0, 0, 0.25)',
+                    backdropFilter: 'blur(2px)',
+                    WebkitBackdropFilter: 'blur(2px)'
+                  }}
+                  onClick={() => setIsQuickActionsOpen(false)}
+                />
+                
+                {/* Premium Floating Side-Sheet */}
+                <motion.div
+                  initial={{ opacity: 0, transform: 'translateY(-8px) scale(0.96)' }}
+                  animate={{ opacity: 1, transform: 'translateY(0) scale(1)' }}
+                  exit={{ opacity: 0, transform: 'translateY(-8px) scale(0.96)' }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className="fixed z-50 lg:hidden"
+                  style={{
+                    top: '76px',
+                    right: '16px',
+                    width: '88vw',
+                    maxWidth: '320px',
+                    maxHeight: '75vh',
+                    background: 'rgba(15, 23, 42, 0.72)',
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '28px',
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.45)',
+                    overflowY: 'auto',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'rgba(255, 255, 255, 0.2) transparent'
+                  }}
+                >
+                  {/* Premium Header Section */}
+                  <div style={{ padding: '20px 20px 14px' }}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 style={{
+                          fontWeight: '700',
+                          fontSize: '20px',
+                          color: '#ffffff',
+                          margin: '0 0 4px 0'
+                        }}>
+                          Quick Actions
+                        </h3>
+                        <p style={{
+                          fontSize: '14px',
+                          color: 'rgba(255, 255, 255, 0.6)',
+                          margin: 0
+                        }}>
+                          Manage weather experience
+                        </p>
+                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setIsQuickActionsOpen(false)}
+                        className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          color: 'rgba(255, 255, 255, 0.8)'
+                        }}
+                      >
+                        <FiX className="w-4 h-4" />
+                      </motion.button>
+                    </div>
+                  </div>
+
+                  {/* Subtle Divider */}
+                  <div style={{
+                    height: '1px',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    margin: '0 20px'
+                  }} />
+
+                  {/* Premium Action Items */}
+                  <div style={{ padding: '8px 0' }}>
+                    {/* Theme Toggle */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        setTheme(theme === 'dark' ? 'light' : 'dark');
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff',
+                        position: 'relative'
+                      }}
+                    >
+                      {/* Yellow Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(255, 204, 0, 0.15)',
+                          boxShadow: theme === 'dark' ? '0 0 20px rgba(255, 204, 0, 0.3)' : 'none'
+                        }}
+                      >
+                        {theme === 'dark' ? 
+                          <FiMoon className="w-5 h-5" style={{ color: '#ffcc00' }} /> : 
+                          <FiSun className="w-5 h-5" style={{ color: '#ffcc00' }} />
+                        }
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">Theme</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          {theme === 'dark' ? 'Dark mode' : 'Light mode'}
+                        </div>
+                      </div>
+
+                      {/* Active State Glow */}
+                      {theme === 'dark' && (
+                        <div style={{
+                          position: 'absolute',
+                          left: '0',
+                          top: '0',
+                          bottom: '0',
+                          width: '3px',
+                          background: 'linear-gradient(to bottom, #ffcc00, #ff9900)',
+                          borderRadius: '0 3px 3px 0'
+                        }} />
+                      )}
+                    </motion.button>
+
+                    {/* Favorites */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        toggleFavorites();
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff'
+                      }}
+                    >
+                      {/* Red Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(239, 68, 68, 0.15)',
+                          boxShadow: '0 0 20px rgba(239, 68, 68, 0.3)'
+                        }}
+                      >
+                        <FiHeart className="w-5 h-5" style={{ color: '#ef4444' }} />
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">Favorites</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          {favorites.length} saved locations
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    {/* Map View */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        toggleMap();
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff'
+                      }}
+                    >
+                      {/* Green Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(34, 197, 94, 0.15)',
+                          boxShadow: '0 0 20px rgba(34, 197, 94, 0.3)'
+                        }}
+                      >
+                        <FiMap className="w-5 h-5" style={{ color: '#22c55e' }} />
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">Map View</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          View weather map
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    {/* Weather Details */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff'
+                      }}
+                    >
+                      {/* Blue Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(59, 130, 246, 0.15)',
+                          boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)'
+                        }}
+                      >
+                        <FiCloud className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">Weather Details</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          View current weather
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    {/* About App */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        onAboutClick();
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff'
+                      }}
+                    >
+                      {/* Purple Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(168, 85, 247, 0.15)',
+                          boxShadow: '0 0 20px rgba(168, 85, 247, 0.3)'
+                        }}
+                      >
+                        <FiInfo className="w-5 h-5" style={{ color: '#a855f7' }} />
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">About App</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          Version 1.0.0
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    {/* Settings */}
+                    <motion.button
+                      whileHover={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => {
+                        setIsSettingsOpen(true);
+                        setIsQuickActionsOpen(false);
+                      }}
+                      className="w-full flex items-center transition-all duration-180"
+                      style={{
+                        height: '72px',
+                        padding: '14px 16px',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: '#ffffff'
+                      }}
+                    >
+                      {/* Orange Glow Icon Container */}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: 'rgba(251, 146, 60, 0.15)',
+                          boxShadow: '0 0 20px rgba(251, 146, 60, 0.3)'
+                        }}
+                      >
+                        <FiSliders className="w-5 h-5" style={{ color: '#fb923c' }} />
+                      </div>
+                      
+                      <div className="flex-1 text-left ml-4">
+                        <div className="font-medium text-base">Settings</div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.6)'
+                        }}>
+                          Units & preferences
+                        </div>
+                      </div>
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
 
           {/* DESKTOP NAVBAR - Original Layout */}
           <div className="hidden lg:flex items-center justify-between w-full">
