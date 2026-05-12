@@ -67,7 +67,7 @@ const AppContent = () => {
   });
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative overflow-x-hidden scroll-smooth">
       <WeatherBackground />
 
       <div className="relative z-10">
@@ -88,7 +88,7 @@ const AppContent = () => {
               </div>
 
               <div className="weather-section overflow-y-auto">
-                <div className="container mx-auto px-4 py-6">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-6">
                   {error && <ErrorDisplay error={error} />}
 
                   {loading && !currentWeather && (
@@ -98,17 +98,18 @@ const AppContent = () => {
                           ? 'Detecting your location...'
                           : 'Loading weather data...'
                       }
+                      centered={true}
                     />
                   )}
 
                   {!loading && currentWeather && (
-                    <div className="space-y-6">
+                    <div className="space-y-8 sm:space-y-10">
                       <CurrentWeatherCard />
 
                       <AirQualityCard />
 
                       <div
-                        className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+                        className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
                         style={{
                           gridTemplateColumns:
                             'repeat(auto-fit, minmax(200px, 1fr))',
@@ -265,14 +266,14 @@ const AppContent = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="container mx-auto px-4 py-6"
+              className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[100px] sm:pt-[110px] lg:pt-[120px]"
             >
               {error && <ErrorDisplay error={error} />}
 
-              {loading && !currentWeather && <LoadingSpinner />}
+              {loading && !currentWeather && <LoadingSpinner centered={true} />}
 
               {!loading && currentWeather && (
-                <div className="space-y-6">
+                <div className="space-y-8 sm:space-y-10">
                   <CurrentWeatherCard />
 
                   <AirQualityCard />

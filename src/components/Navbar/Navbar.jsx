@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSun, FiMoon, FiMenu, FiMapPin, FiSettings, FiHeart, FiSearch, FiUser, FiInfo, FiMap, FiCloud, FiX, FiChevronRight } from 'react-icons/fi';
+import { FiSun, FiMoon, FiMenu, FiMapPin, FiSettings, FiHeart, FiSearch, FiUser, FiInfo, FiMap, FiCloud, FiX, FiChevronRight, FiSliders } from 'react-icons/fi';
 import { useWeather } from '../../context/WeatherContext';
 import { useFavorites } from '../../context/FavoritesContext';
 import SearchBar from '../SearchBar/SearchBar';
@@ -20,8 +20,14 @@ const Navbar = ({ onAboutClick }) => {
   const { favorites, sidebarOpen } = useFavorites();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isQuickActionsOpen, setIsQuickActionsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  
+  // Mobile search state
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Handle scroll behavior for navbar hide/show
   useEffect(() => {
@@ -62,13 +68,36 @@ const Navbar = ({ onAboutClick }) => {
     setIsSettingsOpen(!isSettingsOpen);
   };
 
+  // Mobile search handlers
+  const handleSearchFocus = () => {
+    setIsSearchExpanded(true);
+    setShowSuggestions(true);
+  };
+
+  const handleSearchBlur = () => {
+    setTimeout(() => {
+      setShowSuggestions(false);
+    }, 200);
+  };
+
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    setShowSuggestions(false);
+    setIsSearchExpanded(false);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    setIsSearchExpanded(false);
+  };
+
   return (
     <>
       <motion.nav
         initial={{ y: 0 }}
         animate={{ 
           y: isVisible ? 0 : -100,
-          backdropFilter: isScrolled ? 'blur(20px)' : 'blur(12px)'
         }}
         transition={{ 
           type: 'spring', 
@@ -80,66 +109,258 @@ const Navbar = ({ onAboutClick }) => {
         style={{
           background: theme === 'dark' 
             ? isScrolled
-              ? 'rgba(15, 23, 42, 0.85)' 
-              : 'rgba(15, 23, 42, 0.75)'
+              ? 'rgba(15, 23, 42, 0.9)' 
+              : 'rgba(15, 23, 42, 0.8)'
             : isScrolled
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(245,247,255,0.95), rgba(240,244,255,0.95))'
-              : 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(245,247,255,0.9), rgba(240,244,255,0.9))',
+              ? 'rgba(255,255,255,0.85)' 
+              : 'rgba(255,255,255,0.75)',
           borderBottom: theme === 'dark' 
-            ? '1px solid rgba(255,255,255,0.1)' 
-            : '1px solid rgba(255,255,255,0.4)',
+            ? '1px solid rgba(255,255,255,0.15)' 
+            : '1px solid rgba(255,255,255,0.5)',
           boxShadow: theme === 'dark' 
-            ? isScrolled
-              ? '0 8px 32px rgba(0,0,0,0.3)' 
-              : '0 4px 20px rgba(0,0,0,0.2)'
-            : isScrolled
-              ? '0 8px 32px rgba(31,38,135,0.12)' 
-              : '0 4px 20px rgba(31,38,135,0.08)'
+            ? '0 12px 40px rgba(15,23,42,0.12)' 
+            : '0 12px 40px rgba(15,23,42,0.08)',
+          backdropFilter: isScrolled ? 'blur(24px)' : 'blur(16px)'
         }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* LEFT SIDE - Logo and Title */}
+        <div className="container mx-auto px-2.5 sm:px-6 lg:px-8">
+          {/* MOBILE NAVBAR - Single Row */}
+          <div className="flex items-center justify-between w-full h-16 lg:hidden overflow-x-hidden">
+            {/* LEFT - Logo */}
             <div className="flex items-center space-x-3 flex-shrink-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2"
+                className="flex flex-col items-center"
               >
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shadow-lg`}
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center`}
                   style={{
                     background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
                     boxShadow: theme === 'dark' 
-                      ? '0 4px 20px rgba(6, 182, 212, 0.4)'
+                      ? '0 4px 20px rgba(6, 182, 212, 0.4)' 
                       : '0 4px 20px rgba(6, 182, 212, 0.3)'
                   }}
                 >
-                  <FiCloud className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                  <FiCloud className="w-4 h-4 text-white" />
                 </div>
-                <div className="hidden sm:block">
-                  <h1 className={`text-lg sm:text-xl font-bold`}
-                    style={{
-                      color: theme === 'dark' ? '#ffffff' : '#1e293b',
-                      background: theme === 'light' 
-                        ? 'linear-gradient(135deg, #1e293b, #334155)'
-                        : 'none',
-                      WebkitBackgroundClip: theme === 'light' ? 'text' : 'none',
-                      WebkitTextFillColor: theme === 'light' ? 'transparent' : '#ffffff'
-                    }}>
-                    Weather Pro
-                  </h1>
-                  <p className={`text-xs hidden sm:block`}
-                    style={{
-                      color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)'
-                    }}>
-                    Real-time Weather
-                  </p>
+                <div className="flex flex-col items-center">
+                  <h1 className={`text-xs font-bold`} style={{ color: theme === 'dark' ? '#ffffff' : '#1e293b' }}>Weather</h1>
+                  <p className={`text-xs`} style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)' }}>Forecast</p>
                 </div>
               </motion.div>
             </div>
 
-            {/* CENTER - Search Bar (Desktop Only) */}
-            <div className="hidden lg:flex flex-1 max-w-md mx-8">
+            {/* CENTER - Expandable Search */}
+            <div className="flex-1 justify-center mx-2">
+              <motion.div
+                animate={{ 
+                  width: isSearchExpanded ? 'calc(100vw - 130px)' : '150px',
+                  height: '42px'
+                }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+                className="relative"
+                style={{
+                  background: isSearchExpanded
+                    ? 'rgba(255,255,255,0.92)' 
+                    : 'rgba(255,255,255,0.58)',
+                  borderRadius: '999px',
+                  border: '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: isSearchExpanded
+                    ? '0 12px 40px rgba(79,70,229,0.15)' 
+                    : '0 4px 16px rgba(99,102,241,0.08)',
+                  backdropFilter: 'blur(8px)'
+                }}
+              >
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                  placeholder="Search city..."
+                  className="w-full h-full px-4 pr-10 bg-transparent outline-none"
+                  style={{
+                    color: theme === 'dark' ? '#ffffff' : '#1e293b',
+                    fontSize: '14px'
+                  }}
+                />
+                <FiSearch 
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  style={{
+                    color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6b7280'
+                  }}
+                />
+                {searchQuery && (
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={handleSearchClear}
+                    className="absolute right-10 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center"
+                    style={{
+                      color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6b7280'
+                    }}
+                  >
+                    <FiX />
+                  </motion.button>
+                )}
+
+                {/* Search Suggestions */}
+                <AnimatePresence>
+                  {showSuggestions && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 right-0 mt-2 z-50"
+                      style={{
+                        background: 'rgba(255,255,255,0.82)',
+                        backdropFilter: 'blur(20px)',
+                        borderRadius: '24px',
+                        boxShadow: '0 20px 50px rgba(15,23,42,0.12)'
+                      }}
+                    >
+                      <div className="p-4">
+                        <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Recent Searches</div>
+                        <div className="space-y-2">
+                          {['New York', 'London', 'Tokyo', 'Paris'].map((city, index) => (
+                            <motion.div
+                              key={city}
+                              whileHover={{ scale: 1.02 }}
+                              onClick={() => handleSuggestionClick(city)}
+                              className="p-2 rounded-lg cursor-pointer"
+                              style={{
+                                background: 'rgba(255,255,255,0.6)',
+                                color: '#1e293b'
+                              }}
+                            >
+                              {city}
+                            </motion.div>
+                          ))}
+                        </div>
+                        <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Current Location</div>
+                        <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              onClick={() => handleSuggestionClick('Current Location')}
+                              className="p-2 rounded-lg cursor-pointer"
+                              style={{
+                                background: 'rgba(255,255,255,0.6)',
+                                color: '#1e293b'
+                              }}
+                            >
+                              <FiMapPin className="w-4 h-4" />
+                              <span className="ml-2">Current Location</span>
+                            </motion.div>
+                        <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Popular Cities</div>
+                        <div className="space-y-2">
+                          {['Dubai', 'Singapore', 'Hong Kong'].map((city, index) => (
+                            <motion.div
+                              key={city}
+                              whileHover={{ scale: 1.02 }}
+                              onClick={() => handleSuggestionClick(city)}
+                              className="p-2 rounded-lg cursor-pointer"
+                              style={{
+                                background: 'rgba(255,255,255,0.6)',
+                                color: '#1e293b'
+                              }}
+                            >
+                              {city}
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+
+            {/* RIGHT - Quick Actions + Menu */}
+            <div className="flex items-center space-x-3">
+              {/* Quick Actions Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsQuickActionsOpen(true)}
+                className={`p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: theme === 'dark' 
+                    ? 'rgba(255,255,255,0.55)' 
+                    : 'rgba(255,255,255,0.55)',
+                  backdropFilter: 'blur(8px)',
+                  border: theme === 'dark' 
+                    ? '1px solid rgba(255,255,255,0.6)' 
+                    : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark' 
+                    ? '0 6px 18px rgba(79,70,229,0.08)' 
+                    : '0 6px 18px rgba(79,70,229,0.08)',
+                  color: theme === 'dark' ? '#ffffff' : '#1e293b'
+                }}
+              >
+                <FiSliders className="w-4 h-4" />
+              </motion.button>
+
+              {/* Hamburger Menu */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleSidebar}
+                className={`p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: theme === 'dark' 
+                    ? 'rgba(255,255,255,0.08)' 
+                    : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: theme === 'dark' 
+                    ? '1px solid rgba(255,255,255,0.6)' 
+                    : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark' 
+                    ? '0 6px 18px rgba(79,70,229,0.08)' 
+                    : '0 6px 18px rgba(79,70,229,0.08)',
+                  color: theme === 'dark' ? '#ffffff' : '#1e293b'
+                }}
+              >
+                <FiMenu className="w-5 h-5" />
+              </motion.button>
+            </div>
+          </div>
+
+          {/* DESKTOP NAVBAR - Original Layout */}
+          <div className="hidden lg:flex items-center justify-between w-full">
+            {/* LEFT - Logo */}
+            <div className="flex items-center space-x-3 flex-shrink-0">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center"
+              >
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center`}
+                  style={{
+                    background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                    boxShadow: theme === 'dark' 
+                      ? '0 4px 20px rgba(6, 182, 212, 0.4)' 
+                      : '0 4px 20px rgba(6, 182, 212, 0.3)'
+                  }}
+                >
+                  <FiCloud className="w-4 h-4 text-white" />
+                </div>
+                <h1 className={`text-xs font-bold mt-1`}
+                  style={{
+                    color: theme === 'dark' ? '#ffffff' : '#1e293b'
+                  }}>
+                  Weather
+                </h1>
+                <p className={`text-xs`}
+                  style={{
+                    color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)'
+                  }}>
+                  Forecast
+                </p>
+              </motion.div>
+            </div>
+
+            {/* CENTER - Search Bar */}
+            <div className="flex-1 max-w-md mx-8">
               <div className="relative w-full">
                 <SearchBar />
               </div>
@@ -355,13 +576,14 @@ const Navbar = ({ onAboutClick }) => {
                 background: theme === 'dark' 
                   ? 'rgba(15, 23, 42, 0.98)' 
                   : 'linear-gradient(135deg, rgba(255,255,255,0.98), rgba(245,247,255,0.98))',
-                backdropFilter: 'blur(20px)',
+                backdropFilter: 'blur(24px)',
                 borderLeft: theme === 'dark' 
                   ? '1px solid rgba(255,255,255,0.1)' 
                   : '1px solid rgba(255,255,255,0.6)',
                 boxShadow: theme === 'dark' 
                   ? '-8px 0 32px rgba(0,0,0,0.4)' 
-                  : '-8px 0 32px rgba(31,38,135,0.15)'
+                  : '-8px 0 32px rgba(31,38,135,0.15)',
+                borderRadius: '28px 28px 0 0'
               }}
             >
               <div className="flex flex-col h-full">
@@ -394,7 +616,7 @@ const Navbar = ({ onAboutClick }) => {
                         : 'rgba(0,0,0,0.05)',
                       border: theme === 'dark' 
                         ? '1px solid rgba(255,255,255,0.2)' 
-                        : '1px solid rgba(0,0,0,0.1)',
+                        : '1px solid rgba(255,255,255,0.6)',
                       color: theme === 'dark' ? '#ffffff' : '#1e293b'
                     }}
                   >
@@ -408,7 +630,9 @@ const Navbar = ({ onAboutClick }) => {
                     ? 'rgba(255,255,255,0.1)' 
                     : 'rgba(255,255,255,0.6)'
                 }}>
-                  <SearchBar />
+                  <div className="relative w-full">
+                    <SearchBar />
+                  </div>
                 </div>
 
                 {/* Menu Items */}
@@ -627,14 +851,6 @@ const Navbar = ({ onAboutClick }) => {
                       : '#64748b',
                     borderRadius: '8px'
                   }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.1)' 
-                      : 'rgba(59,130,246,0.1)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = 'transparent';
-                  }}
                 >
                   Temperature Unit
                 </button>
@@ -649,14 +865,6 @@ const Navbar = ({ onAboutClick }) => {
                       : '#64748b',
                     borderRadius: '8px'
                   }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.1)' 
-                      : 'rgba(59,130,246,0.1)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = 'transparent';
-                  }}
                 >
                   Wind Speed Unit
                 </button>
@@ -670,14 +878,6 @@ const Navbar = ({ onAboutClick }) => {
                       ? '#d1d5db' 
                       : '#64748b',
                     borderRadius: '8px'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.1)' 
-                      : 'rgba(59,130,246,0.1)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = 'transparent';
                   }}
                 >
                   Notifications
