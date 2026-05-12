@@ -179,7 +179,7 @@ const SearchBar = () => {
                 style={{
                   color: theme === 'dark' 
                     ? 'rgba(255,255,255,0.5)' 
-                    : 'var(--light-text-muted)'
+                    : '#6b7280'
                 }} />
             )}
           </div>
@@ -192,41 +192,41 @@ const SearchBar = () => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Search for a city..."
-            className={`w-full pl-10 pr-24 py-3 rounded-xl border transition-all duration-200 backdrop-blur-sm focus:outline-none`}
+            className={`w-full pl-10 pr-24 py-3 rounded-2xl border transition-all duration-200 backdrop-blur-sm focus:outline-none`}
             style={{
               background: theme === 'dark' 
                 ? 'rgba(31,41,55,0.5)' 
-                : 'var(--light-bg-glass)',
-              backdropFilter: 'blur(8px)',
+                : 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(14px)',
               border: theme === 'dark' 
                 ? '1px solid rgba(255,255,255,0.1)' 
-                : '1px solid var(--light-border)',
+                : '1px solid rgba(255,255,255,0.7)',
               color: theme === 'dark' 
                 ? '#ffffff' 
-                : 'var(--light-text-primary)',
+                : '#111827',
               placeholderColor: theme === 'dark' 
                 ? 'rgba(255,255,255,0.5)' 
-                : 'var(--light-text-muted)',
+                : '#6b7280',
               boxShadow: theme === 'dark' 
                 ? '0 4px 20px rgba(0,0,0,0.2)' 
-                : 'var(--light-shadow)'
+                : '0 4px 20px rgba(99,102,241,0.08)',
+              transition: 'all 0.3s ease'
             }}
             onFocus={(e) => {
-              setShowSuggestions(true);
               e.target.style.borderColor = theme === 'dark' 
-                ? '#3b82f6' 
-                : 'var(--light-accent)';
+                ? 'rgba(99,102,241,0.5)' 
+                : 'rgba(99,102,241,0.5)';
               e.target.style.boxShadow = theme === 'dark' 
-                ? '0 0 20px rgba(59,130,246,0.3)' 
-                : '0 0 20px rgba(59,130,246,0.2)';
+                ? '0 0 0 3px rgba(99,102,241,0.2)' 
+                : '0 0 0 3px rgba(99,102,241,0.15)';
             }}
             onBlur={(e) => {
               e.target.style.borderColor = theme === 'dark' 
-                ? 'rgba(255,255,255,0.1)' 
-                : '1px solid var(--light-border)';
+                ? '1px solid rgba(255,255,255,0.1)' 
+                : '1px solid rgba(255,255,255,0.7)';
               e.target.style.boxShadow = theme === 'dark' 
                 ? '0 4px 20px rgba(0,0,0,0.2)' 
-                : 'var(--light-shadow)';
+                : '0 4px 20px rgba(99,102,241,0.08)';
             }}
           />
 

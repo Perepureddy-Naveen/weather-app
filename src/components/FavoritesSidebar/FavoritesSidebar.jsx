@@ -158,26 +158,32 @@ const FavoritesSidebar = () => {
             animate="visible"
             exit="exit"
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className={`fixed right-0 top-0 h-full w-full md:w-96 z-50 ${
-              theme === 'dark'
-                ? 'bg-gray-900/95 border-gray-700'
-                : 'bg-white/95 border-gray-200'
-            } border-l shadow-2xl backdrop-blur-xl overflow-hidden`}
+            className={`fixed right-0 top-0 h-full w-full md:w-96 z-50 border-l shadow-2xl backdrop-blur-xl overflow-hidden`}
+            style={{
+              background: theme === 'dark'
+                ? 'rgba(17,24,39,0.95)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(245,247,255,0.9))',
+              borderLeftColor: theme === 'dark' ? 'rgba(75,85,99,0.5)' : 'rgba(255,255,255,0.7)',
+              boxShadow: theme === 'dark' 
+                ? '0 0 50px rgba(0,0,0,0.5)' 
+                : '0 0 50px rgba(99,102,241,0.15)'
+            }}
           >
             <div className="h-full flex flex-col">
               {/* Header */}
-              <div className={`flex items-center justify-between p-4 border-b ${
-                theme === 'dark'
-                  ? 'border-gray-700 bg-gray-800/50'
-                  : 'border-gray-200 bg-white/50'
-              } backdrop-blur-sm`}>
+              <div className={`flex items-center justify-between p-6 border-b backdrop-blur-sm`}
+                style={{
+                  borderBottomColor: theme === 'dark' ? 'rgba(75,85,99,0.5)' : 'rgba(255,255,255,0.7)',
+                  background: theme === 'dark' ? 'rgba(31,41,55,0.5)' : 'rgba(255,255,255,0.6)'
+                }}>
                 <div className="flex items-center space-x-2">
                   <FiHeart className={`w-5 h-5 ${
                     theme === 'dark' ? 'text-red-400' : 'text-red-500'
                   }`} />
-                  <h2 className={`text-lg font-semibold ${
-                    theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h2 className={`text-lg font-semibold`}
+                    style={{
+                      color: theme === 'dark' ? '#ffffff' : '#111827'
+                    }}>
                     Favorites
                   </h2>
                   {favorites.length > 0 && (
@@ -198,17 +204,24 @@ const FavoritesSidebar = () => {
                 <div className="flex items-center space-x-2">
                   {favorites.length > 0 && (
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={updateAllFavoritesWeather}
                       disabled={loading}
-                      className={`p-2 rounded-lg transition-colors ${
+                      className={`p-2 rounded-lg transition-all duration-200 ${
                         loading
                           ? 'opacity-50 cursor-not-allowed'
-                          : theme === 'dark'
-                          ? 'hover:bg-gray-700 text-gray-300'
-                          : 'hover:bg-gray-100 text-gray-600'
+                          : ''
                       }`}
+                      style={{
+                        background: theme === 'dark'
+                          ? 'rgba(75,85,99,0.3)'
+                          : 'rgba(255,255,255,0.6)',
+                        color: theme === 'dark' ? '#d1d5db' : '#6b7280',
+                        border: theme === 'dark' 
+                          ? '1px solid rgba(75,85,99,0.5)' 
+                          : '1px solid rgba(255,255,255,0.7)',
+                        backdropFilter: 'blur(8px)'
+                      }}
                       title="Refresh all favorites"
                     >
                       <motion.div
@@ -221,14 +234,19 @@ const FavoritesSidebar = () => {
                   )}
                   
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSidebarOpen(false)}
-                    className={`p-2 rounded-lg transition-colors ${
-                      theme === 'dark'
-                        ? 'hover:bg-gray-700 text-gray-300'
-                        : 'hover:bg-gray-100 text-gray-600'
-                    }`}
+                    className={`p-2 rounded-lg transition-all duration-200`}
+                    style={{
+                      background: theme === 'dark'
+                        ? 'rgba(75,85,99,0.3)'
+                        : 'rgba(255,255,255,0.6)',
+                      color: theme === 'dark' ? '#d1d5db' : '#6b7280',
+                      border: theme === 'dark' 
+                        ? '1px solid rgba(75,85,99,0.5)' 
+                        : '1px solid rgba(255,255,255,0.7)',
+                      backdropFilter: 'blur(8px)'
+                    }}
                   >
                     <FiX className="w-5 h-5" />
                   </motion.button>

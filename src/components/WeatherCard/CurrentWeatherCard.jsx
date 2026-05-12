@@ -1,54 +1,56 @@
-import React from "react";
-import { motion } from "framer-motion";
-import {
-  FiDroplet,
-  FiWind,
-  FiEye,
-  FiSun,
+import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  FiDroplet, 
+  FiWind, 
+  FiEye, 
+  FiSun, 
   FiThermometer,
   FiMapPin,
   FiHeart,
-  FiStar,
-} from "react-icons/fi";
-import { useWeather } from "../../context/WeatherContext";
-import FavoriteButton from "../FavoriteButton/FavoriteButton";
+  FiStar
+} from 'react-icons/fi';
+import { useWeather } from '../../context/WeatherContext';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
 
 const CurrentWeatherCard = () => {
-  const { currentWeather, selectedCity, theme, settings } = useWeather();
+  const { 
+    currentWeather, 
+    selectedCity, 
+    theme, 
+    settings 
+  } = useWeather();
 
   if (!currentWeather || !selectedCity) return null;
+  
+  const temperature = settings.temperatureUnit === 'fahrenheit' 
+    ? Math.round(currentWeather.temp_f)
+    : Math.round(currentWeather.temp_c);
+    
+  const feelsLike = settings.temperatureUnit === 'fahrenheit'
+    ? Math.round(currentWeather.feelslike_f)
+    : Math.round(currentWeather.feelslike_c);
 
-  const temperature =
-    settings.temperatureUnit === "fahrenheit"
-      ? Math.round(currentWeather.temp_f)
-      : Math.round(currentWeather.temp_c);
-
-  const feelsLike =
-    settings.temperatureUnit === "fahrenheit"
-      ? Math.round(currentWeather.feelslike_f)
-      : Math.round(currentWeather.feelslike_c);
-
-  const windSpeed =
-    settings.windSpeedUnit === "mph"
-      ? Math.round(currentWeather.wind_mph)
-      : Math.round(currentWeather.wind_kph);
+  const windSpeed = settings.windSpeedUnit === 'mph'
+    ? Math.round(currentWeather.wind_mph)
+    : Math.round(currentWeather.wind_kph);
 
   const getWeatherIcon = (condition) => {
     const iconMap = {
-      sunny: "☀️",
-      clear: "🌙",
-      "partly-cloudy": "⛅",
-      cloudy: "☁️",
-      overcast: "☁️",
-      mist: "🌫️",
-      fog: "🌫️",
-      rain: "🌧️",
-      "light-rain": "🌦️",
-      "heavy-rain": "⛈️",
-      snow: "❄️",
-      "light-snow": "🌨️",
-      "heavy-snow": "🌨️",
-      thunderstorm: "⛈️",
+      'sunny': '☀️',
+      'clear': '🌙',
+      'partly-cloudy': '⛅',
+      'cloudy': '☁️',
+      'overcast': '☁️',
+      'mist': '🌫️',
+      'fog': '🌫️',
+      'rain': '🌧️',
+      'light-rain': '🌦️',
+      'heavy-rain': '⛈️',
+      'snow': '❄️',
+      'light-snow': '🌨️',
+      'heavy-snow': '🌨️',
+      'thunderstorm': '⛈️',
     };
 
     const lowerCondition = condition.toLowerCase();
@@ -57,7 +59,7 @@ const CurrentWeatherCard = () => {
         return icon;
       }
     }
-    return "🌤️";
+    return '🌤️';
   };
 
   return (
@@ -65,280 +67,269 @@ const CurrentWeatherCard = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-6 rounded-xl current-weather-card"
+      className="p-6 sm:p-8 rounded-2xl"
+      whileHover={{ 
+        y: -2,
+        transition: { duration: 0.3 }
+      }}
       style={{
-        background:
-          theme === "dark"
-            ? "rgba(255,255,255,0.06)"
-            : "rgba(255,255,255,0.92)",
-        backdropFilter: "blur(18px)",
-        border:
-          theme === "dark"
-            ? "1px solid rgba(255,255,255,0.1)"
-            : "1px solid rgba(0,0,0,0.08)",
-        boxShadow:
-          theme === "dark"
-            ? "0 8px 32px rgba(31, 38, 135, 0.37)"
-            : "0 8px 24px rgba(0,0,0,0.08)",
+        background: theme === 'dark' 
+          ? 'rgba(255,255,255,0.06)' 
+          : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,245,255,0.9))',
+        backdropFilter: 'blur(18px)',
+        border: theme === 'dark' 
+          ? '1px solid rgba(255,255,255,0.1)' 
+          : '1px solid rgba(255,255,255,0.7)',
+        boxShadow: theme === 'dark' 
+          ? '0 8px 32px rgba(31, 38, 135, 0.37)' 
+          : '0 8px 32px rgba(99,102,241,0.08)',
+        transition: 'all 0.3s ease'
       }}
     >
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col lg:flex-row items-start justify-between mb-6 gap-6">
         {/* LEFT SIDE - Weather Info */}
-        <div className="flex items-center space-x-6">
+        <div className="flex flex-col lg:flex-row items-center space-x-6 gap-4">
           <div className="text-6xl">
             {getWeatherIcon(currentWeather.condition.text)}
           </div>
           <div>
-            <h2
+            <h2 
               className="text-5xl font-bold"
               style={{
-                color:
-                  theme === "dark" ? "#ffffff" : "var(--light-text-primary)",
-                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                color: theme === 'dark' ? '#ffffff' : '#111827',
+                textShadow: theme === 'light' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none'
               }}
             >
               {Math.round(currentWeather.temp_c)}°C
             </h2>
-            <p
+            <p 
               className="text-lg"
               style={{
-                color:
-                  theme === "dark"
-                    ? "rgba(255,255,255,0.7)"
-                    : "var(--light-text-secondary)",
+                color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
               }}
             >
               Feels like {Math.round(currentWeather.feelslike_c)}°C
             </p>
-            <p
+            <p 
               className="text-base font-medium"
               style={{
-                color:
-                  theme === "dark"
-                    ? "rgba(255,255,255,0.5)"
-                    : "var(--light-text-muted)",
+                color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#9ca3af'
               }}
             >
               {currentWeather.condition.text}
             </p>
             <div className="flex items-center space-x-2 mt-2">
-              <FiMapPin
-                className="w-4 h-4"
+              <FiMapPin 
+                className="w-4 h-4" 
                 style={{
-                  color: theme === "dark" ? "#06b6d4" : "var(--light-accent)",
+                  color: theme === 'dark' ? '#06b6d4' : '#4f46e5'
                 }}
               />
-              <span
+              <span 
                 className="text-sm font-medium"
                 style={{
-                  color:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.7)"
-                      : "var(--light-text-secondary)",
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
-                {selectedCity?.name || "Unknown Location"}
+                {selectedCity?.name || 'Unknown Location'}
               </span>
             </div>
           </div>
         </div>
 
         {/* RIGHT SIDE - Compact Stats */}
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            className="p-3 rounded-lg"
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6">
+          {/* Humidity */}
+          <motion.div 
+            className="p-4 rounded-2xl"
+            whileHover={{ 
+              y: -2,
+              transition: { duration: 0.2 }
+            }}
             style={{
-              background:
-                theme === "dark"
-                  ? "rgba(255,255,255,0.04)"
-                  : "var(--light-bg-glass)",
-              backdropFilter: "blur(8px)",
-              border:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid var(--light-border)",
-              boxShadow:
-                theme === "dark"
-                  ? "0 4px 20px rgba(0,0,0,0.2)"
-                  : "var(--light-shadow)",
+              background: theme === 'dark' 
+                ? 'rgba(99,102,241,0.15)' 
+                : 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(12px)',
+              border: theme === 'dark' 
+                ? '1px solid rgba(99,102,241,0.3)' 
+                : '1px solid rgba(255,255,255,0.7)',
+              boxShadow: theme === 'dark' 
+                ? '0 8px 24px rgba(99,102,241,0.3)' 
+                : '0 8px 24px rgba(99,102,241,0.08)',
+              transition: 'all 0.3s ease'
             }}
           >
             <div className="flex items-center space-x-2 mb-1">
-              <FiDroplet
-                className="w-3 h-3"
+              <FiDroplet 
+                className="w-4 h-4" 
                 style={{
-                  color: theme === "dark" ? "#3b82f6" : "var(--light-humidity)",
+                  color: theme === 'dark' ? '#3b82f6' : '#3b82f6'
                 }}
               />
-              <span
+              <span 
                 className="text-xs font-medium"
                 style={{
-                  color:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.7)"
-                      : "var(--light-text-secondary)",
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
                 Humidity
               </span>
             </div>
-            <p
+            <p 
               className="text-lg font-bold"
               style={{
-                color:
-                  theme === "dark" ? "#ffffff" : "var(--light-text-primary)",
+                color: theme === 'dark' ? '#ffffff' : '#111827'
               }}
             >
               {currentWeather.humidity}%
             </p>
-          </div>
-          <div
-            className="p-3 rounded-lg"
+          </motion.div>
+
+          {/* Wind */}
+          <motion.div 
+            className="p-4 rounded-2xl"
+            whileHover={{ 
+              y: -2,
+              transition: { duration: 0.2 }
+            }}
             style={{
-              background:
-                theme === "dark"
-                  ? "rgba(255,255,255,0.04)"
-                  : "var(--light-bg-glass)",
-              backdropFilter: "blur(8px)",
-              border:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid var(--light-border)",
-              boxShadow:
-                theme === "dark"
-                  ? "0 4px 20px rgba(0,0,0,0.2)"
-                  : "var(--light-shadow)",
+              background: theme === 'dark' 
+                ? 'rgba(59,130,246,0.15)' 
+                : 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(12px)',
+              border: theme === 'dark' 
+                ? '1px solid rgba(59,130,246,0.3)' 
+                : '1px solid rgba(255,255,255,0.7)',
+              boxShadow: theme === 'dark' 
+                ? '0 8px 24px rgba(59,130,246,0.3)' 
+                : '0 8px 24px rgba(99,102,241,0.08)',
+              transition: 'all 0.3s ease'
             }}
           >
             <div className="flex items-center space-x-2 mb-1">
-              <FiWind
-                className="w-3 h-3"
+              <FiWind 
+                className="w-4 h-4" 
                 style={{
-                  color: theme === "dark" ? "#10b981" : "var(--light-wind)",
+                  color: theme === 'dark' ? '#60a5fa' : '#60a5fa'
                 }}
               />
-              <span
+              <span 
                 className="text-xs font-medium"
                 style={{
-                  color:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.7)"
-                      : "var(--light-text-secondary)",
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
                 Wind
               </span>
             </div>
-            <p
+            <p 
               className="text-lg font-bold"
               style={{
-                color:
-                  theme === "dark" ? "#ffffff" : "var(--light-text-primary)",
+                color: theme === 'dark' ? '#ffffff' : '#111827'
               }}
             >
-              {currentWeather.wind_kph} km/h
+              {windSpeed} {settings.windSpeedUnit === 'mph' ? 'mph' : 'km/h'}
             </p>
-          </div>
-          <div
-            className="p-3 rounded-lg"
+          </motion.div>
+
+          {/* Pressure */}
+          <motion.div 
+            className="p-4 rounded-2xl"
+            whileHover={{ 
+              y: -2,
+              transition: { duration: 0.2 }
+            }}
             style={{
-              background:
-                theme === "dark"
-                  ? "rgba(255,255,255,0.04)"
-                  : "var(--light-bg-glass)",
-              backdropFilter: "blur(8px)",
-              border:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid var(--light-border)",
-              boxShadow:
-                theme === "dark"
-                  ? "0 4px 20px rgba(0,0,0,0.2)"
-                  : "var(--light-shadow)",
+              background: theme === 'dark' 
+                ? 'rgba(34,197,94,0.15)' 
+                : 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(12px)',
+              border: theme === 'dark' 
+                ? '1px solid rgba(34,197,94,0.3)' 
+                : '1px solid rgba(255,255,255,0.7)',
+              boxShadow: theme === 'dark' 
+                ? '0 8px 24px rgba(34,197,94,0.3)' 
+                : '0 8px 24px rgba(99,102,241,0.08)',
+              transition: 'all 0.3s ease'
             }}
           >
             <div className="flex items-center space-x-2 mb-1">
-              <FiThermometer
-                className="w-3 h-3"
+              <FiThermometer 
+                className="w-4 h-4" 
                 style={{
-                  color: theme === "dark" ? "#f59e0b" : "var(--light-pressure)",
+                  color: theme === 'dark' ? '#22c55e' : '#22c55e'
                 }}
               />
-              <span
+              <span 
                 className="text-xs font-medium"
                 style={{
-                  color:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.7)"
-                      : "var(--light-text-secondary)",
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
                 Pressure
               </span>
             </div>
-            <p
+            <p 
               className="text-lg font-bold"
               style={{
-                color:
-                  theme === "dark" ? "#ffffff" : "var(--light-text-primary)",
+                color: theme === 'dark' ? '#ffffff' : '#111827'
               }}
             >
               {currentWeather.pressure_mb} mb
             </p>
-          </div>
-          <div
-            className="p-3 rounded-lg"
+          </motion.div>
+
+          {/* Visibility */}
+          <motion.div 
+            className="p-4 rounded-2xl"
+            whileHover={{ 
+              y: -2,
+              transition: { duration: 0.2 }
+            }}
             style={{
-              background:
-                theme === "dark"
-                  ? "rgba(255,255,255,0.04)"
-                  : "var(--light-bg-glass)",
-              backdropFilter: "blur(8px)",
-              border:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid var(--light-border)",
-              boxShadow:
-                theme === "dark"
-                  ? "0 4px 20px rgba(0,0,0,0.2)"
-                  : "var(--light-shadow)",
+              background: theme === 'dark' 
+                ? 'rgba(251,146,60,0.15)' 
+                : 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(12px)',
+              border: theme === 'dark' 
+                ? '1px solid rgba(251,146,60,0.3)' 
+                : '1px solid rgba(255,255,255,0.7)',
+              boxShadow: theme === 'dark' 
+                ? '0 8px 24px rgba(251,146,60,0.3)' 
+                : '0 8px 24px rgba(99,102,241,0.08)',
+              transition: 'all 0.3s ease'
             }}
           >
             <div className="flex items-center space-x-2 mb-1">
-              <FiEye
-                className="w-3 h-3"
+              <FiEye 
+                className="w-4 h-4" 
                 style={{
-                  color:
-                    theme === "dark" ? "#8b5cf6" : "var(--light-visibility)",
+                  color: theme === 'dark' ? '#fb923c' : '#fb923c'
                 }}
               />
-              <span
+              <span 
                 className="text-xs font-medium"
                 style={{
-                  color:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.7)"
-                      : "var(--light-text-secondary)",
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
                 Visibility
               </span>
             </div>
-            <p
+            <p 
               className="text-lg font-bold"
               style={{
-                color:
-                  theme === "dark" ? "#ffffff" : "var(--light-text-primary)",
+                color: theme === 'dark' ? '#ffffff' : '#111827'
               }}
             >
               {currentWeather.vis_km} km
             </p>
-          </div>
+          </motion.div>
         </div>
-      </div>
-
-      <div className="flex justify-end mt-4">
-        <FavoriteButton location={selectedCity} />
+        <div className="flex justify-end mt-4">
+          <FavoriteButton location={selectedCity} />
+        </div>
       </div>
     </motion.div>
   );

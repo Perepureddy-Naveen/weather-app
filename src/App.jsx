@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiWind, FiEye, FiThermometer } from "react-icons/fi";
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiWind, FiEye, FiThermometer } from 'react-icons/fi';
 
-import { WeatherProvider, useWeather } from "./context/WeatherContext";
-import { FavoritesProvider } from "./context/FavoritesContext";
+import { WeatherProvider, useWeather } from './context/WeatherContext';
+import { FavoritesProvider } from './context/FavoritesContext';
 
-import Navbar from "./components/Navbar/Navbar";
-import CurrentWeatherCard from "./components/WeatherCard/CurrentWeatherCard";
-import AirQualityCard from "./components/WeatherCard/AirQualityCard";
-import HourlyForecast from "./components/Forecast/HourlyForecast";
-import WeeklyForecast from "./components/Forecast/WeeklyForecast";
-import Sidebar from "./components/Sidebar/Sidebar";
-import FavoritesSidebar from "./components/FavoritesSidebar/FavoritesSidebar";
-import ToastContainer from "./components/Toast/ToastContainer";
-import WeatherBackground from "./components/Background/WeatherBackground";
-import WeatherMap from "./components/WeatherMap/WeatherMap";
-import LoadingSpinner from "./components/Loader/LoadingSpinner";
-import ErrorDisplay from "./components/Loader/ErrorDisplay";
-import About from "./components/About/About";
+import Navbar from './components/Navbar/Navbar';
+import CurrentWeatherCard from './components/WeatherCard/CurrentWeatherCard';
+import AirQualityCard from './components/WeatherCard/AirQualityCard';
+import HourlyForecast from './components/Forecast/HourlyForecast';
+import WeeklyForecast from './components/Forecast/WeeklyForecast';
+import Sidebar from './components/Sidebar/Sidebar';
+import FavoritesSidebar from './components/FavoritesSidebar/FavoritesSidebar';
+import ToastContainer from './components/Toast/ToastContainer';
+import WeatherBackground from './components/Background/WeatherBackground';
+import WeatherMap from './components/WeatherMap/WeatherMap';
+import LoadingSpinner from './components/Loader/LoadingSpinner';
+import ErrorDisplay from './components/Loader/ErrorDisplay';
+import About from './components/About/About';
 
 const AppContent = () => {
   const {
@@ -42,7 +42,7 @@ const AppContent = () => {
       try {
         await getCurrentLocation();
       } catch (error) {
-        console.log("Location access denied or failed");
+        console.log('Location access denied or failed');
       }
     };
 
@@ -50,15 +50,20 @@ const AppContent = () => {
   }, []);
 
   const metricCardStyle = (bgColor, borderColor, shadowColor) => ({
-    background: theme === "dark" ? bgColor : "var(--light-bg-glass)",
-    backdropFilter: "blur(18px)",
+    background:
+      theme === 'dark'
+        ? bgColor
+        : 'var(--light-bg-glass)',
+    backdropFilter: 'blur(18px)',
     border:
-      theme === "dark"
+      theme === 'dark'
         ? `1px solid ${borderColor}`
-        : "1px solid var(--light-border)",
+        : '1px solid var(--light-border)',
     boxShadow:
-      theme === "dark" ? `0 12px 40px ${shadowColor}` : "var(--light-shadow)",
-    minHeight: "140px",
+      theme === 'dark'
+        ? `0 12px 40px ${shadowColor}`
+        : 'var(--light-shadow)',
+    minHeight: '140px',
   });
 
   return (
@@ -90,8 +95,8 @@ const AppContent = () => {
                     <LoadingSpinner
                       text={
                         isDetectingLocation
-                          ? "Detecting your location..."
-                          : "Loading weather data..."
+                          ? 'Detecting your location...'
+                          : 'Loading weather data...'
                       }
                     />
                   )}
@@ -103,53 +108,29 @@ const AppContent = () => {
                       <AirQualityCard />
 
                       <div
-                        className="grid gap-6"
+                        className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
                         style={{
                           gridTemplateColumns:
-                            "repeat(auto-fit, minmax(240px, 1fr))",
+                            'repeat(auto-fit, minmax(200px, 1fr))',
                         }}
                       >
                         {/* Wind */}
                         <div
-                          className="p-5 rounded-2xl border backdrop-blur-xl weather-metric-card"
+                          className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(59,130,246,0.15)",
-                            "rgba(59,130,246,0.3)",
-                            "rgba(59,130,246,0.3)"
+                            'rgba(59,130,246,0.15)',
+                            'rgba(59,130,246,0.3)',
+                            'rgba(59,130,246,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <FiWind
-                              className="w-6 h-6"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#60a5fa"
-                                    : "var(--light-wind)",
-                              }}
-                            />
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <FiWind className="w-6 h-6" style={{color: theme === 'dark' ? '#60a5fa' : 'var(--light-wind)'}} />
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               Wind Speed
                             </span>
                           </div>
 
-                          <p
-                            className="text-2xl font-bold"
-                            style={{
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "var(--light-text-primary)",
-                            }}
-                          >
+                          <p className="text-2xl font-bold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                             {currentWeather.wind_kph} km/h
                           </p>
                         </div>
@@ -158,43 +139,19 @@ const AppContent = () => {
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(16,185,129,0.15)",
-                            "rgba(16,185,129,0.3)",
-                            "rgba(16,185,129,0.3)"
+                            'rgba(16,185,129,0.15)',
+                            'rgba(16,185,129,0.3)',
+                            'rgba(16,185,129,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <FiEye
-                              className="w-6 h-6"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#34d399"
-                                    : "var(--light-visibility)",
-                              }}
-                            />
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <FiEye className="w-6 h-6" style={{color: theme === 'dark' ? '#34d399' : 'var(--light-visibility)'}} />
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               Visibility
                             </span>
                           </div>
 
-                          <p
-                            className="text-2xl font-bold"
-                            style={{
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "var(--light-text-primary)",
-                            }}
-                          >
+                          <p className="text-2xl font-bold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                             {currentWeather.vis_km} km
                           </p>
                         </div>
@@ -203,43 +160,19 @@ const AppContent = () => {
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(245,158,11,0.15)",
-                            "rgba(245,158,11,0.3)",
-                            "rgba(245,158,11,0.3)"
+                            'rgba(245,158,11,0.15)',
+                            'rgba(245,158,11,0.3)',
+                            'rgba(245,158,11,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <FiThermometer
-                              className="w-6 h-6"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#fbbf24"
-                                    : "var(--light-pressure)",
-                              }}
-                            />
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <FiThermometer className="w-6 h-6" style={{color: theme === 'dark' ? '#fbbf24' : 'var(--light-pressure)'}} />
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               Pressure
                             </span>
                           </div>
 
-                          <p
-                            className="text-2xl font-bold"
-                            style={{
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "var(--light-text-primary)",
-                            }}
-                          >
+                          <p className="text-2xl font-bold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                             {currentWeather.pressure_mb} mb
                           </p>
                         </div>
@@ -248,35 +181,19 @@ const AppContent = () => {
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(99,102,241,0.15)",
-                            "rgba(99,102,241,0.3)",
-                            "rgba(99,102,241,0.3)"
+                            'rgba(99,102,241,0.15)',
+                            'rgba(99,102,241,0.3)',
+                            'rgba(99,102,241,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
                             <span className="text-2xl">💧</span>
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               Humidity
                             </span>
                           </div>
 
-                          <p
-                            className="text-2xl font-bold"
-                            style={{
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "var(--light-text-primary)",
-                            }}
-                          >
+                          <p className="text-2xl font-bold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                             {currentWeather.humidity}%
                           </p>
                         </div>
@@ -285,36 +202,20 @@ const AppContent = () => {
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(168,85,247,0.15)",
-                            "rgba(168,85,247,0.3)",
-                            "rgba(168,85,247,0.3)"
+                            'rgba(168,85,247,0.15)',
+                            'rgba(168,85,247,0.3)',
+                            'rgba(168,85,247,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
                             <span className="text-2xl">☀️</span>
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               UV Index
                             </span>
                           </div>
 
-                          <p
-                            className="text-2xl font-bold"
-                            style={{
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "var(--light-text-primary)",
-                            }}
-                          >
-                            {currentWeather.uv || "N/A"}
+                          <p className="text-2xl font-bold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
+                            {currentWeather.uv || 'N/A'}
                           </p>
                         </div>
 
@@ -322,47 +223,25 @@ const AppContent = () => {
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
                           style={metricCardStyle(
-                            "rgba(251,146,60,0.15)",
-                            "rgba(251,146,60,0.3)",
-                            "rgba(251,146,60,0.3)"
+                            'rgba(251,146,60,0.15)',
+                            'rgba(251,146,60,0.3)',
+                            'rgba(251,146,60,0.3)'
                           )}
                         >
                           <div className="flex items-center gap-3 mb-3">
                             <span className="text-2xl">🌅</span>
-                            <span
-                              className="font-semibold"
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
+                            <span className="font-semibold" style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
                               Sunrise / Sunset
                             </span>
                           </div>
 
                           <div className="space-y-2">
-                            <p
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
-                              Sunrise: {currentWeather.sunrise || "N/A"}
+                            <p style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
+                              Sunrise: {currentWeather.sunrise || 'N/A'}
                             </p>
 
-                            <p
-                              style={{
-                                color:
-                                  theme === "dark"
-                                    ? "#ffffff"
-                                    : "var(--light-text-primary)",
-                              }}
-                            >
-                              Sunset: {currentWeather.sunset || "N/A"}
+                            <p style={{color: theme === 'dark' ? '#ffffff' : 'var(--light-text-primary)'}}>
+                              Sunset: {currentWeather.sunset || 'N/A'}
                             </p>
                           </div>
                         </div>
