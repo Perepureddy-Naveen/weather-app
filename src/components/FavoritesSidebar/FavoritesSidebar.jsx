@@ -26,7 +26,7 @@ const FavoritesSidebar = () => {
     updateAllFavoritesWeather 
   } = useFavorites();
   
-  const { fetchWeatherByLocation, theme } = useWeather();
+  const { fetchWeatherByLocation, theme, dispatch } = useWeather();
 
   // Close sidebar on escape key
   useEffect(() => {
@@ -47,6 +47,13 @@ const FavoritesSidebar = () => {
     try {
       const location = `${favorite.name},${favorite.country}`;
       await fetchWeatherByLocation(location);
+
+      // Update map center if lat/lon are available
+      if (favorite.lat && favorite.lon) {
+        dispatch({ type: 'SET_MAP_CENTER', payload: [favorite.lat, favorite.lon] });
+        dispatch({ type: 'SET_MAP_ZOOM', payload: 13 });
+      }
+
       setSidebarOpen(false);
     } catch (error) {
       console.error('Error fetching favorite weather:', error);
@@ -143,7 +150,7 @@ const FavoritesSidebar = () => {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
             onClick={() => setSidebarOpen(false)}
           />
         )}

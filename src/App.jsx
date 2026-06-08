@@ -12,12 +12,15 @@ import HourlyForecast from './components/Forecast/HourlyForecast';
 import WeeklyForecast from './components/Forecast/WeeklyForecast';
 import Sidebar from './components/Sidebar/Sidebar';
 import FavoritesSidebar from './components/FavoritesSidebar/FavoritesSidebar';
+import SettingsSidebar from './components/SettingsSidebar/SettingsSidebar';
 import ToastContainer from './components/Toast/ToastContainer';
 import WeatherBackground from './components/Background/WeatherBackground';
 import WeatherMap from './components/WeatherMap/WeatherMap';
 import LoadingSpinner from './components/Loader/LoadingSpinner';
 import ErrorDisplay from './components/Loader/ErrorDisplay';
 import About from './components/About/About';
+import TemperatureAnalytics from './components/Analytics/TemperatureAnalytics';
+// import WeatherInsights from './components/Insights/WeatherInsights';
 
 const AppContent = () => {
   const {
@@ -103,16 +106,23 @@ const AppContent = () => {
                   )}
 
                   {!loading && currentWeather && (
-                    <div className="space-y-8 sm:space-y-10">
+                    <div className="space-y-5 sm:space-y-6">
                       <CurrentWeatherCard />
+
+                      {/* Temperature Analytics */}
+                      <TemperatureAnalytics
+                        hourlyForecast={hourlyForecast}
+                        weeklyForecast={weeklyForecast}
+                        theme={theme}
+                      />
 
                       <AirQualityCard />
 
                       <div
-                        className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+                        className="grid gap-3 sm:gap-4 lg:gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
                         style={{
                           gridTemplateColumns:
-                            'repeat(auto-fit, minmax(200px, 1fr))',
+                            'repeat(auto-fit, minmax(140px, 1fr))',
                         }}
                       >
                         {/* Wind */}
@@ -273,8 +283,15 @@ const AppContent = () => {
               {loading && !currentWeather && <LoadingSpinner centered={true} />}
 
               {!loading && currentWeather && (
-                <div className="space-y-8 sm:space-y-10">
+                <div className="space-y-5 sm:space-y-6">
                   <CurrentWeatherCard />
+
+                  {/* Temperature Analytics */}
+                  <TemperatureAnalytics
+                    hourlyForecast={hourlyForecast}
+                    weeklyForecast={weeklyForecast}
+                    theme={theme}
+                  />
 
                   <AirQualityCard />
 
@@ -292,7 +309,7 @@ const AppContent = () => {
         </AnimatePresence>
       </div>
 
-      <Sidebar />
+      <SettingsSidebar />
 
       <FavoritesSidebar />
 

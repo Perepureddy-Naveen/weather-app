@@ -328,7 +328,7 @@ const CurrentWeatherCard = () => {
           </motion.div>
         </div>
         <div className="flex justify-end mt-4">
-          <FavoriteButton location={selectedCity} />
+          <FavoriteButton cityData={selectedCity} />
         </div>
       </div>
     </motion.div>

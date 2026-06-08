@@ -7,20 +7,20 @@ import SearchBar from '../SearchBar/SearchBar';
 
 
 const Navbar = ({ onAboutClick }) => {
-  const { 
-    theme, 
-    setTheme, 
+  const {
+    theme,
+    setTheme,
     toggleSidebar,
-    getCurrentLocation, 
-    loading, 
-    isMapVisible, 
+    getCurrentLocation,
+    loading,
+    isMapVisible,
     toggleMap,
-    selectedCity 
+    selectedCity
   } = useWeather();
-  const { favorites, sidebarOpen } = useFavorites();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { favorites, sidebarOpen, toggleSidebar: toggleFavoritesSidebar } = useFavorites();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isQuickActionsOpen, setIsQuickActionsOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   
@@ -82,7 +82,7 @@ const Navbar = ({ onAboutClick }) => {
   };
 
   const handleSettingsClick = () => {
-    setIsSettingsOpen(!isSettingsOpen);
+    toggleSidebar();
   };
 
   // Mobile search handlers
@@ -489,7 +489,7 @@ const Navbar = ({ onAboutClick }) => {
                       whileHover={{ scale: 0.98 }}
                       whileTap={{ scale: 0.96 }}
                       onClick={() => {
-                        toggleFavorites();
+                        toggleFavoritesSidebar();
                         setIsQuickActionsOpen(false);
                       }}
                       className="w-full flex items-center transition-all duration-180"
@@ -774,7 +774,7 @@ const Navbar = ({ onAboutClick }) => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {}}
+                onClick={toggleFavoritesSidebar}
                 className={`p-2 sm:p-2.5 rounded-xl transition-all duration-300 hidden sm:flex`}
                 style={{
                   background: theme === 'dark' 
