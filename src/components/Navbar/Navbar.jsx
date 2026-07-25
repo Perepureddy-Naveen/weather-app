@@ -140,17 +140,17 @@ const Navbar = ({ onAboutClick }) => {
           backdropFilter: isScrolled ? 'blur(24px)' : 'blur(16px)'
         }}
       >
-        <div className="container mx-auto px-2.5 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-2.5 sm:px-6 lg:px-8" style={{ overflow: 'visible' }}>
           {/* MOBILE NAVBAR - Single Row */}
-          <div className="flex items-center justify-between w-full h-16 lg:hidden overflow-x-hidden">
+          <div className="flex items-center justify-between w-full h-16 lg:hidden" style={{ overflow: 'visible' }}>
             {/* LEFT - Logo */}
-            <div className="flex items-center space-x-3 flex-shrink-0">
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex flex-col items-center"
               >
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center`}
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center`}
                   style={{
                     background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
                     boxShadow: theme === 'dark' 
@@ -158,21 +158,21 @@ const Navbar = ({ onAboutClick }) => {
                       : '0 4px 20px rgba(6, 182, 212, 0.3)'
                   }}
                 >
-                  <FiCloud className="w-4 h-4 text-white" />
+                  <FiCloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
                 </div>
                 <div className="flex flex-col items-center">
-                  <h1 className={`text-xs font-bold`} style={{ color: theme === 'dark' ? '#ffffff' : '#1e293b' }}>Weather</h1>
-                  <p className={`text-xs`} style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)' }}>Forecast</p>
+                  <h1 className={`text-[10px] sm:text-xs font-bold`} style={{ color: theme === 'dark' ? '#ffffff' : '#1e293b' }}>Weather</h1>
+                  <p className={`text-[10px] sm:text-xs`} style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)' }}>Forecast</p>
                 </div>
               </motion.div>
             </div>
 
             {/* CENTER - Expandable Search */}
-            <div className="flex-1 justify-center mx-2">
+            <div className="flex-1 justify-center mx-1 sm:mx-2">
               <motion.div
                 animate={{ 
-                  width: isSearchExpanded ? 'calc(100vw - 130px)' : '150px',
-                  height: '42px'
+                  width: isSearchExpanded ? 'calc(100vw - 120px)' : '120px',
+                  height: '40px'
                 }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
                 className="relative"
@@ -195,14 +195,13 @@ const Navbar = ({ onAboutClick }) => {
                   onFocus={handleSearchFocus}
                   onBlur={handleSearchBlur}
                   placeholder="Search city..."
-                  className="w-full h-full px-4 pr-10 bg-transparent outline-none"
+                  className="w-full h-full px-3 sm:px-4 pr-8 sm:pr-10 bg-transparent outline-none text-xs sm:text-sm"
                   style={{
-                    color: theme === 'dark' ? '#ffffff' : '#1e293b',
-                    fontSize: '14px'
+                    color: theme === 'dark' ? '#ffffff' : '#1e293b'
                   }}
                 />
                 <FiSearch 
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 pointer-events-none"
                   style={{
                     color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6b7280'
                   }}
@@ -212,7 +211,7 @@ const Navbar = ({ onAboutClick }) => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handleSearchClear}
-                    className="absolute right-10 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center"
+                    className="absolute right-6 sm:right-10 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center"
                     style={{
                       color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6b7280'
                     }}
@@ -237,7 +236,7 @@ const Navbar = ({ onAboutClick }) => {
                         boxShadow: '0 20px 50px rgba(15,23,42,0.12)'
                       }}
                     >
-                      <div className="p-4">
+                      <div className="p-3 sm:p-4">
                         <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Recent Searches</div>
                         <div className="space-y-2">
                           {['New York', 'London', 'Tokyo', 'Paris'].map((city, index) => (
@@ -245,7 +244,7 @@ const Navbar = ({ onAboutClick }) => {
                               key={city}
                               whileHover={{ scale: 1.02 }}
                               onClick={() => handleSuggestionClick(city)}
-                              className="p-2 rounded-lg cursor-pointer"
+                              className="p-2 rounded-lg cursor-pointer text-xs sm:text-sm"
                               style={{
                                 background: 'rgba(255,255,255,0.6)',
                                 color: '#1e293b'
@@ -255,27 +254,27 @@ const Navbar = ({ onAboutClick }) => {
                             </motion.div>
                           ))}
                         </div>
-                        <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Current Location</div>
+                        <div className="text-xs font-medium mb-2 mt-3" style={{ color: '#6b7280' }}>Current Location</div>
                         <motion.div
                               whileHover={{ scale: 1.02 }}
                               onClick={() => handleSuggestionClick('Current Location')}
-                              className="p-2 rounded-lg cursor-pointer"
+                              className="p-2 rounded-lg cursor-pointer text-xs sm:text-sm"
                               style={{
                                 background: 'rgba(255,255,255,0.6)',
                                 color: '#1e293b'
                               }}
                             >
-                              <FiMapPin className="w-4 h-4" />
+                              <FiMapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                               <span className="ml-2">Current Location</span>
                             </motion.div>
-                        <div className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Popular Cities</div>
+                        <div className="text-xs font-medium mb-2 mt-3" style={{ color: '#6b7280' }}>Popular Cities</div>
                         <div className="space-y-2">
                           {['Dubai', 'Singapore', 'Hong Kong'].map((city, index) => (
                             <motion.div
                               key={city}
                               whileHover={{ scale: 1.02 }}
                               onClick={() => handleSuggestionClick(city)}
-                              className="p-2 rounded-lg cursor-pointer"
+                              className="p-2 rounded-lg cursor-pointer text-xs sm:text-sm"
                               style={{
                                 background: 'rgba(255,255,255,0.6)',
                                 color: '#1e293b'
@@ -293,13 +292,13 @@ const Navbar = ({ onAboutClick }) => {
             </div>
 
             {/* RIGHT - Quick Actions + Menu */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Quick Actions Button */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsQuickActionsOpen(true)}
-                className={`p-2 rounded-xl transition-all duration-300`}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
                 style={{
                   background: theme === 'dark' 
                     ? 'rgba(255,255,255,0.55)' 
@@ -314,7 +313,7 @@ const Navbar = ({ onAboutClick }) => {
                   color: theme === 'dark' ? '#ffffff' : '#1e293b'
                 }}
               >
-                <FiSliders className="w-4 h-4" />
+                <FiSliders className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </motion.button>
 
               {/* Hamburger Menu */}
@@ -322,7 +321,7 @@ const Navbar = ({ onAboutClick }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={toggleSidebar}
-                className={`p-2 rounded-xl transition-all duration-300`}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
                 style={{
                   background: theme === 'dark' 
                     ? 'rgba(255,255,255,0.08)' 
@@ -337,7 +336,7 @@ const Navbar = ({ onAboutClick }) => {
                   color: theme === 'dark' ? '#ffffff' : '#1e293b'
                 }}
               >
-                <FiMenu className="w-5 h-5" />
+                <FiMenu className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.button>
             </div>
           </div>
@@ -679,8 +678,159 @@ const Navbar = ({ onAboutClick }) => {
             )}
           </AnimatePresence>
 
+          {/* TABLET NAVBAR */}
+          <div className="hidden md:flex lg:hidden items-center justify-between w-full" style={{ overflow: 'visible' }}>
+            {/* LEFT - Logo */}
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center"
+              >
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center`}
+                  style={{
+                    background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                    boxShadow: theme === 'dark'
+                      ? '0 4px 20px rgba(6, 182, 212, 0.4)'
+                      : '0 4px 20px rgba(6, 182, 212, 0.3)'
+                  }}
+                >
+                  <FiCloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                </div>
+                <h1 className={`text-[10px] sm:text-xs font-bold mt-1`}
+                  style={{
+                    color: theme === 'dark' ? '#ffffff' : '#1e293b'
+                  }}>
+                  Weather
+                </h1>
+                <p className={`text-[10px] sm:text-xs`}
+                  style={{
+                    color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(71,85,105,0.8)'
+                  }}>
+                  Forecast
+                </p>
+              </motion.div>
+            </div>
+
+            {/* CENTER - Search Bar */}
+            <div className="flex-1 max-w-xs sm:max-w-sm mx-2 sm:mx-4">
+              <div className="relative w-full">
+                <SearchBar />
+              </div>
+            </div>
+
+            {/* RIGHT SIDE - Actions */}
+            <div className="flex items-center space-x-1.5 sm:space-x-2">
+              {/* Location Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLocationClick}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: theme === 'dark'
+                    ? 'rgba(255,255,255,0.08)'
+                    : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: theme === 'dark'
+                    ? '1px solid rgba(255,255,255,0.15)'
+                    : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark'
+                    ? '0 4px 20px rgba(0,0,0,0.2)'
+                    : '0 4px 20px rgba(31,38,135,0.1)',
+                  color: theme === 'dark' ? '#ffffff' : '#1e293b'
+                }}
+                title="Current Location"
+              >
+                <FiMapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </motion.button>
+
+              {/* Theme Toggle */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleThemeToggle}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: theme === 'dark'
+                    ? 'rgba(255,255,255,0.08)'
+                    : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: theme === 'dark'
+                    ? '1px solid rgba(255,255,255,0.15)'
+                    : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark'
+                    ? '0 4px 20px rgba(0,0,0,0.2)'
+                    : '0 4px 20px rgba(31,38,135,0.1)',
+                  color: theme === 'dark' ? '#fbbf24' : '#f59e0b'
+                }}
+                title="Toggle Theme"
+              >
+                {theme === 'dark' ? <FiSun className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <FiMoon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
+              </motion.button>
+
+              {/* Favorites */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleFavoritesSidebar}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: theme === 'dark'
+                    ? 'rgba(255,255,255,0.08)'
+                    : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: theme === 'dark'
+                    ? '1px solid rgba(255,255,255,0.15)'
+                    : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark'
+                    ? '0 4px 20px rgba(0,0,0,0.2)'
+                    : '0 4px 20px rgba(31,38,135,0.1)',
+                  color: theme === 'dark' ? '#ef4444' : '#ef4444'
+                }}
+                title="Favorites"
+              >
+                <FiHeart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </motion.button>
+
+              {/* Map Toggle */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleMap}
+                className={`p-1.5 sm:p-2 rounded-xl transition-all duration-300`}
+                style={{
+                  background: isMapVisible
+                    ? theme === 'dark'
+                      ? 'rgba(6, 182, 212, 0.2)'
+                      : 'rgba(6, 182, 212, 0.15)'
+                    : theme === 'dark'
+                      ? 'rgba(255,255,255,0.08)'
+                      : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: isMapVisible
+                    ? '1px solid rgba(6, 182, 212, 0.5)'
+                    : theme === 'dark'
+                      ? '1px solid rgba(255,255,255,0.15)'
+                      : '1px solid rgba(255,255,255,0.6)',
+                  boxShadow: theme === 'dark'
+                    ? '0 4px 20px rgba(0,0,0,0.2)'
+                    : '0 4px 20px rgba(31,38,135,0.1)',
+                  color: isMapVisible
+                    ? '#06b6d4'
+                    : theme === 'dark'
+                      ? '#ffffff'
+                      : '#1e293b'
+                }}
+                title="Map View"
+              >
+                <FiMap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </motion.button>
+            </div>
+          </div>
+
           {/* DESKTOP NAVBAR - Original Layout */}
-          <div className="hidden lg:flex items-center justify-between w-full">
+          <div className="hidden lg:flex items-center justify-between w-full" style={{ overflow: 'visible' }}>
             {/* LEFT - Logo */}
             <div className="flex items-center space-x-3 flex-shrink-0">
               <motion.div
@@ -691,8 +841,8 @@ const Navbar = ({ onAboutClick }) => {
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center`}
                   style={{
                     background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
-                    boxShadow: theme === 'dark' 
-                      ? '0 4px 20px rgba(6, 182, 212, 0.4)' 
+                    boxShadow: theme === 'dark'
+                      ? '0 4px 20px rgba(6, 182, 212, 0.4)'
                       : '0 4px 20px rgba(6, 182, 212, 0.3)'
                   }}
                 >

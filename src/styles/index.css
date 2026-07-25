@@ -281,32 +281,430 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .text-5xl {
     font-size: 2.5rem;
   }
-  
+
   .text-4xl {
     font-size: 2rem;
   }
-  
+
   .text-2xl {
     font-size: 1.75rem;
   }
-  
+
   .text-xl {
     font-size: 1.5rem;
   }
-  
-  .text-lg {
-    font-size: 1.25rem;
-  }
+}
+
+/* Prevent overflow globally */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Prevent text overflow */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Prevent card overflow */
+.glass-card,
+.current-weather-card,
+.air-quality-card,
+.hourly-forecast-card,
+.weekly-forecast-card,
+.weather-metric-card {
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Responsive typography */
+.responsive-text {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.responsive-heading {
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+}
+
+.responsive-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
 .glass-card:hover {
   background: var(--glass-hover);
   transform: translateY(-2px);
   box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+/* Responsive Layout Improvements */
+@media (min-width: 1200px) {
+  .weather-dashboard {
+    grid-template-columns: 48% 52%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .weather-dashboard {
+    grid-template-columns: 50% 50%;
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .weather-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .map-section {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  .weather-section {
+    min-height: calc(100vh - 380px);
+  }
+}
+
+@media (max-width: 767px) {
+  .weather-dashboard {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 80px);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .map-section {
+    height: 280px;
+    min-height: 280px;
+    width: 100%;
+    order: 1;
+  }
+
+  .weather-section {
+    order: 2;
+    min-height: auto;
+  }
+}
+
+/* Split Screen Layout Fix */
+.weather-dashboard {
+  display: grid;
+  height: 100vh;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.map-section {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.weather-section {
+  height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+/* Responsive Weather Cards */
+@media (max-width: 640px) {
+  .glass-card,
+  .current-weather-card,
+  .air-quality-card,
+  .hourly-forecast-card,
+  .weekly-forecast-card,
+  .weather-metric-card {
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Responsive Charts */
+@media (max-width: 640px) {
+  .recharts-wrapper {
+    min-height: 200px;
+  }
+
+  .recharts-tooltip-wrapper {
+    font-size: 12px;
+  }
+}
+
+/* Responsive Search Bar */
+@media (max-width: 640px) {
+  .search-input {
+    font-size: 14px;
+    padding: 10px 40px 10px 40px;
+  }
+}
+
+/* Custom Scrollbar for Search Suggestions */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Responsiveness - All Screen Sizes */
+@media (max-width: 320px) {
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .glass-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+  }
+
+  .text-xl {
+    font-size: 1.125rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem;
+  }
+
+  .weather-dashboard {
+    padding: 8px;
+  }
+
+  .map-section {
+    height: 250px;
+    min-height: 250px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .weather-dashboard {
+    padding: 10px;
+  }
+
+  .map-section {
+    height: 260px;
+    min-height: 260px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .weather-dashboard {
+    padding: 12px;
+  }
+
+  .map-section {
+    height: 270px;
+    min-height: 270px;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 767px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .weather-dashboard {
+    padding: 14px;
+  }
+
+  .map-section {
+    height: 280px;
+    min-height: 280px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .weather-dashboard {
+    padding: 18px;
+  }
+
+  .map-section {
+    height: 300px;
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1023px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .weather-dashboard {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .container {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .weather-dashboard {
+    padding: 22px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .weather-dashboard {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .weather-dashboard {
+    padding: 32px;
+  }
+}
+
+/* Prevent horizontal scrolling on all devices */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure search bar doesn't overflow on mobile */
+.search-input {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure dropdown doesn't overflow viewport */
+.search-suggestions-dropdown {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Responsive grid for weather cards */
+@media (max-width: 640px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-6 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-6 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-cols-6 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 /* Premium Button Styles */
@@ -626,7 +1024,8 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  min-height: 0;
+  min-height: 300px;
+  width: 100%;
 }
 
 .weather-section {
@@ -645,7 +1044,7 @@
   box-sizing: border-box;
 }
 
-/* Mobile Responsive */
+/* Tablet Responsive */
 @media (max-width: 1024px) {
   .weather-dashboard {
     grid-template-columns: 1fr;
@@ -658,6 +1057,7 @@
   .map-section {
     height: 350px;
     min-height: 350px;
+    width: 100%;
   }
 
   .weather-section {
@@ -669,24 +1069,32 @@
   }
 }
 
+/* Mobile Responsive */
 @media (max-width: 640px) {
   .weather-dashboard {
-    height: calc(100vh - 80px); /* Account for navbar height */
+    height: auto;
+    min-height: calc(100vh - 80px);
     gap: 12px;
     padding: 12px;
+    display: flex;
+    flex-direction: column;
   }
 
   .map-section {
-    height: 250px;
-    min-height: 250px;
+    height: 280px;
+    min-height: 280px;
+    width: 100%;
+    order: 1;
   }
 
   .weather-section {
-    min-height: calc(100vh - 330px); /* 80px navbar + 250px map */
+    min-height: auto;
+    order: 2;
+    overflow-x: hidden;
   }
 
   .weather-section > div {
-    padding: 8px;
+    padding: 12px;
   }
 }
 

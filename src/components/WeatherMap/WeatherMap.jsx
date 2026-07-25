@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiMaximize, FiHome, FiLayers } from 'react-icons/fi';
 import L from 'leaflet';
 import { useWeather } from '../../context/WeatherContext';
 import MapControls from './MapControls';
-import WeatherPopup from './WeatherPopup';
 import MapMarker from './MapMarker';
 
 // Fix default icon issues
@@ -31,30 +30,41 @@ const WeatherMap = () => {
   const [mapCenter, setMapCenter] = useState([17.3850, 78.4867]); // Default to Hyderabad
   const [mapZoom, setMapZoom] = useState(10);
   const [userLocation, setUserLocation] = useState(null);
-  const [clickedLocation, setClickedLocation] = useState(null);
+  const [isShowingCurrentLocation, setIsShowingCurrentLocation] = useState(true); // Track if showing current GPS or selected location
   const [isFullscreen, setIsFullscreen] = useState(false);
   const mapRef = useRef(null);
 
-  // Update map center when selected city changes
+  // Update map center when selected city changes (from search)
   useEffect(() => {
     if (selectedCity && selectedCity.lat && selectedCity.lon) {
       setMapCenter([selectedCity.lat, selectedCity.lon]);
       setMapZoom(12);
+      setIsShowingCurrentLocation(false); // Switch to selected location mode
     }
   }, [selectedCity]);
 
-  // Get user location on mount
+  // Get user location on mount and fetch weather
   useEffect(() => {
     const getUserLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          (position) => {
+          async (position) => {
             const { latitude, longitude } = position.coords;
             setUserLocation([latitude, longitude]);
             setMapCenter([latitude, longitude]);
+            setIsShowingCurrentLocation(true); // Start in current location mode
+            // Fetch weather for detected location
+            try {
+              await getWeatherByCoordinates(latitude, longitude);
+            } catch (error) {
+              console.error('Error fetching weather for current location:', error);
+            }
           },
           (error) => {
             console.log('Location access denied:', error);
+            // Default to Hyderabad if permission denied
+            setMapCenter([17.3850, 78.4867]);
+            setIsShowingCurrentLocation(false); // Switch to selected location mode (default city)
           }
         );
       }
@@ -68,8 +78,9 @@ const WeatherMap = () => {
     useMapEvents({
       click: async (e) => {
         const { lat, lng } = e.latlng;
-        setClickedLocation([lat, lng]);
-        
+        setMapCenter([lat, lng]);
+        setIsShowingCurrentLocation(false); // Switch to selected location mode
+
         try {
           await getWeatherByCoordinates(lat, lng);
         } catch (error) {
@@ -101,10 +112,25 @@ const WeatherMap = () => {
   // Handle controls
   const handleCurrentLocation = async () => {
     try {
-      await getCurrentLocation();
-      if (userLocation) {
-        setMapCenter(userLocation);
-        setMapZoom(14);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation([latitude, longitude]);
+            setMapCenter([latitude, longitude]);
+            setMapZoom(14);
+            setIsShowingCurrentLocation(true); // Switch back to current location mode
+            // Refresh weather for current location
+            try {
+              await getWeatherByCoordinates(latitude, longitude);
+            } catch (error) {
+              console.error('Error fetching weather for current location:', error);
+            }
+          },
+          (error) => {
+            console.error('Error getting current location:', error);
+          }
+        );
       }
     } catch (error) {
       console.error('Error getting current location:', error);
@@ -158,48 +184,24 @@ const WeatherMap = () => {
               borderRadius: '16px'
             }}
           />
-          
+
           <MapEvents />
           <MapController />
 
-          {/* Current Location Marker */}
-          {userLocation && (
+          {/* Single Active Marker - Either current location (pulsing dot) or selected location (pin) */}
+          {isShowingCurrentLocation && userLocation ? (
             <MapMarker
               position={userLocation}
               type="current"
               title="Your Location"
             />
-          )}
-
-          {/* Selected City Marker */}
-          {selectedCity && selectedCity.lat && selectedCity.lon && (
+          ) : selectedCity && selectedCity.lat && selectedCity.lon ? (
             <MapMarker
               position={[selectedCity.lat, selectedCity.lon]}
-              type="selected"
+              type="pin"
               title={selectedCity.name}
-              weather={currentWeather}
             />
-          )}
-
-          {/* Clicked Location Marker */}
-          {clickedLocation && (
-            <MapMarker
-              position={clickedLocation}
-              type="clicked"
-              title="Selected Location"
-              weather={currentWeather}
-            />
-          )}
-
-          {/* Weather Popup for selected location */}
-          {selectedCity && selectedCity.lat && selectedCity.lon && currentWeather && (
-            <Popup
-              position={[selectedCity.lat, selectedCity.lon]}
-              className="weather-popup"
-            >
-              <WeatherPopup weather={currentWeather} city={selectedCity} />
-            </Popup>
-          )}
+          ) : null}
         </MapContainer>
 
         {/* Premium Map Controls */}
@@ -209,6 +211,37 @@ const WeatherMap = () => {
           onResetView={handleResetView}
           isFullscreen={isFullscreen}
         />
+
+        {/* Floating Locate Me Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleCurrentLocation}
+          className="absolute bottom-6 right-6 z-[1000] p-3 rounded-full shadow-lg"
+          style={{
+            background: 'rgba(59, 130, 246, 0.9)',
+            backdropFilter: 'blur(8px)',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 4px 20px rgba(59, 130, 246, 0.4)',
+            color: '#ffffff'
+          }}
+          title="Locate Me"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </motion.button>
 
         {/* Loading Overlay */}
         {loading && (

@@ -73,7 +73,7 @@ const AppContent = () => {
     <div className="min-h-screen relative overflow-x-hidden scroll-smooth">
       <WeatherBackground />
 
-      <div className="relative z-10">
+      <div className="relative z-10" style={{ overflow: 'visible' }}>
         <Navbar onAboutClick={() => setIsAboutOpen(true)} />
 
         <AnimatePresence mode="wait">
@@ -118,13 +118,46 @@ const AppContent = () => {
 
                       <AirQualityCard />
 
-                      <div
-                        className="grid gap-3 sm:gap-4 lg:gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+                      {/* Weather Details Card */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="p-6 rounded-3xl border backdrop-blur-xl"
                         style={{
-                          gridTemplateColumns:
-                            'repeat(auto-fit, minmax(140px, 1fr))',
+                          background: theme === 'dark'
+                            ? 'rgba(30, 41, 59, 0.7)'
+                            : 'rgba(255, 255, 255, 0.85)',
+                          backdropFilter: 'blur(20px)',
+                          border: theme === 'dark'
+                            ? '1px solid rgba(255, 255, 255, 0.1)'
+                            : '1px solid rgba(255, 255, 255, 0.8)',
+                          boxShadow: theme === 'dark'
+                            ? '0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1)'
+                            : '0 20px 60px rgba(99, 102, 241, 0.08), 0 0 40px rgba(99, 102, 241, 0.05)',
+                          borderRadius: '24px'
                         }}
                       >
+                        <div className="flex items-center space-x-3 mb-6">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                            style={{
+                              background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                              boxShadow: '0 4px 20px rgba(6, 182, 212, 0.3)'
+                            }}
+                          >
+                            <FiWind className="w-5 h-5 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold"
+                            style={{
+                              color: theme === 'dark' ? '#ffffff' : '#111827'
+                            }}>
+                            Weather Details
+                          </h3>
+                        </div>
+
+                        <div
+                          className="grid gap-3 sm:gap-4 lg:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                        >
                         {/* Wind */}
                         <div
                           className="p-5 rounded-2xl border backdrop-blur-xl"
@@ -256,7 +289,8 @@ const AppContent = () => {
                             </p>
                           </div>
                         </div>
-                      </div>
+                        </div>
+                      </motion.div>
 
                       {hourlyForecast.length > 0 && (
                         <HourlyForecast hourlyForecast={hourlyForecast} />

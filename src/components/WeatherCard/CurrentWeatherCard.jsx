@@ -119,19 +119,34 @@ const CurrentWeatherCard = () => {
               {currentWeather.condition.text}
             </p>
             <div className="flex items-center space-x-2 mt-2">
-              <FiMapPin 
-                className="w-4 h-4" 
+              <FiMapPin
+                className="w-4 h-4"
                 style={{
                   color: theme === 'dark' ? '#06b6d4' : '#4f46e5'
                 }}
               />
-              <span 
+              <span
                 className="text-sm font-medium"
                 style={{
                   color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#6b7280'
                 }}
               >
                 {selectedCity?.name || 'Unknown Location'}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2 mt-1">
+              <span
+                className="text-xs"
+                style={{
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#9ca3af'
+                }}
+              >
+                {new Date().toLocaleDateString('en-GB', {
+                  weekday: 'long',
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
               </span>
             </div>
           </div>

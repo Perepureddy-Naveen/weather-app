@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiMic, FiX } from 'react-icons/fi';
 import { useWeather } from '../../context/WeatherContext';
 
-const SearchBar = () => {
+const SearchBar = memo(() => {
   const {
     searchQuery,
     searchSuggestions,
@@ -161,7 +161,7 @@ const SearchBar = () => {
   const allSuggestions = [...searchSuggestions, ...searchHistory.slice(0, 3)];
 
   return (
-    <div className="relative w-full" ref={suggestionsRef}>
+    <div className="relative w-full" style={{ maxWidth: '650px', margin: 'auto', zIndex: 10000 }}>
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative">
           {/* Search Icon */}
@@ -281,53 +281,56 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`absolute top-full left-0 right-0 mt-2 rounded-xl shadow-xl border overflow-hidden backdrop-blur-xl z-50`}
+            className={`absolute rounded-xl shadow-xl border overflow-hidden z-[9999]`}
             style={{
-              background: theme === 'dark' 
-                ? 'rgba(31,41,55,0.95)' 
-                : 'var(--light-bg-secondary)',
-              backdropFilter: 'blur(12px)',
-              border: theme === 'dark' 
-                ? '1px solid rgba(255,255,255,0.1)' 
-                : '1px solid var(--light-border)',
-              boxShadow: theme === 'dark' 
-                ? '0 20px 40px rgba(0,0,0,0.4)' 
-                : 'var(--light-shadow-hover)'
+              top: 'calc(100% + 8px)',
+              left: '0',
+              width: '100%',
+              background: theme === 'dark'
+                ? '#1f2937'
+                : '#ffffff',
+              border: theme === 'dark'
+                ? '1px solid rgba(255,255,255,0.1)'
+                : '1px solid #e5e7eb',
+              boxShadow: theme === 'dark'
+                ? '0 20px 40px rgba(0,0,0,0.4)'
+                : '0 12px 32px rgba(0,0,0,0.1)',
+              maxHeight: '320px'
             }}
           >
-            <div className="max-h-80 overflow-y-auto">
+            <div className="max-h-80 overflow-y-auto custom-scrollbar">
               {allSuggestions.map((suggestion, index) => {
                 const isHistoryItem = suggestion.query;
                 const isSelected = index === selectedSuggestionIndex;
-                
+
                 return (
                   <motion.div
                     key={isHistoryItem ? `history-${index}` : suggestion.id}
                     whileHover={{ x: 4 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => isHistoryItem ? 
-                      fetchWeatherByLocation(suggestion.query) : 
+                    onClick={() => isHistoryItem ?
+                      fetchWeatherByLocation(suggestion.query) :
                       handleSuggestionClick(suggestion)
                     }
-                    className={`px-4 py-3 cursor-pointer transition-colors border-b`}
+                    className="px-4 py-3 cursor-pointer transition-colors border-b last:border-b-0"
                     style={{
                       background: isSelected
                         ? theme === 'dark'
                           ? 'rgba(59,130,246,0.2)'
                           : 'rgba(59,130,246,0.1)'
                         : 'transparent',
-                      borderColor: theme === 'dark' 
-                        ? 'rgba(255,255,255,0.1)' 
-                        : 'var(--light-border)',
-                      color: theme === 'dark' 
-                        ? '#ffffff' 
-                        : 'var(--light-text-primary)'
+                      borderColor: theme === 'dark'
+                        ? 'rgba(255,255,255,0.1)'
+                        : '#f3f4f6',
+                      color: theme === 'dark'
+                        ? '#ffffff'
+                        : '#1f2937'
                     }}
                     onMouseOver={(e) => {
                       if (!isSelected) {
-                        e.target.style.background = theme === 'dark' 
-                          ? 'rgba(255,255,255,0.05)' 
-                          : 'rgba(59,130,246,0.05)';
+                        e.target.style.background = theme === 'dark'
+                          ? 'rgba(255,255,255,0.05)'
+                          : '#f3f4f6';
                       }
                     }}
                     onMouseOut={(e) => {
@@ -337,45 +340,45 @@ const SearchBar = () => {
                     }}
                   >
                     <div className="flex items-center space-x-3">
-                      <FiSearch className={`w-4 h-4`}
+                      <FiSearch className="w-4 h-4 flex-shrink-0"
                         style={{
-                          color: theme === 'dark' 
-                            ? 'rgba(255,255,255,0.5)' 
-                            : 'var(--light-text-muted)'
+                          color: theme === 'dark'
+                            ? 'rgba(255,255,255,0.5)'
+                            : '#6b7280'
                         }} />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         {isHistoryItem ? (
                           <div>
-                            <p className="text-sm font-medium" style={{
-                              color: theme === 'dark' 
-                                ? '#ffffff' 
-                                : 'var(--light-text-primary)'
+                            <p className="text-sm font-semibold truncate" style={{
+                              color: theme === 'dark'
+                                ? '#ffffff'
+                                : '#1f2937'
                             }}>
                               {suggestion.query}
                             </p>
-                            <p className="text-xs" style={{
-                              color: theme === 'dark' 
-                                ? 'rgba(255,255,255,0.5)' 
-                                : 'var(--light-text-muted)'
+                            <p className="text-xs mt-0.5" style={{
+                              color: theme === 'dark'
+                                ? 'rgba(255,255,255,0.5)'
+                                : '#6b7280'
                             }}>
                               Recent search
                             </p>
                           </div>
                         ) : (
                           <div>
-                            <p className="text-sm font-medium" style={{
-                              color: theme === 'dark' 
-                                ? '#ffffff' 
-                                : 'var(--light-text-primary)'
+                            <p className="text-sm font-semibold truncate" style={{
+                              color: theme === 'dark'
+                                ? '#ffffff'
+                                : '#1f2937'
                             }}>
-                              {suggestion.name}, {suggestion.region}
+                              {suggestion.name}
                             </p>
-                            <p className="text-xs" style={{
-                              color: theme === 'dark' 
-                                ? 'rgba(255,255,255,0.5)' 
-                                : 'var(--light-text-muted)'
+                            <p className="text-xs mt-0.5 truncate" style={{
+                              color: theme === 'dark'
+                                ? 'rgba(255,255,255,0.6)'
+                                : '#6b7280'
                             }}>
-                              {suggestion.country}
+                              {suggestion.region}, {suggestion.country}
                             </p>
                           </div>
                         )}
@@ -390,6 +393,6 @@ const SearchBar = () => {
       </AnimatePresence>
     </div>
   );
-};
+});
 
 export default SearchBar;
